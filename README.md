@@ -1,167 +1,211 @@
-# Flask Practice - CI/CD Pipeline Project
+# Flask CI/CD Pipeline Assignment
 
-## Project Overview by Ali HUssain
+## Project Overview
 
-This project demonstrates the implementation of Continuous Integration and Continuous Deployment (CI/CD) for a Flask web application using:
+This project demonstrates the implementation of a complete CI/CD pipeline for a Flask application using both Jenkins and GitHub Actions.
 
-- Jenkins Pipeline
-- GitHub Actions
-- Pytest for automated testing
+The project satisfies the Hero Vired CI/CD assignment requirements by automating:
+
+- Build
+- Testing
+- Deployment
+- Branch based deployment
+- Release based deployment
 
 ---
 
-## Repository Structure
+# Technology Stack
+
+- Python 3.11
+- Flask
+- Jenkins
+- GitHub Actions
+- Docker
+- Terraform
+- AWS EC2
+- Git
+- Pytest
+
+---
+
+# Project Structure
 
 ```
-flask_Practice
+flask_Practice/
 │
 ├── .github/
 │   └── workflows/
 │       └── ci-cd.yml
+│
 ├── templates/
 ├── app.py
 ├── test_app.py
 ├── requirements.txt
 ├── Jenkinsfile
-├── start_flask.sh
-└── README.md
-```
-
----
-
-# Prerequisites
-
-- Python 3.x
-- pip
-- Git
-- GitHub Account
-- Jenkins
-- Pytest
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
+├── README.md
+└── start_flask.sh
 ```
 
 ---
 
 # Jenkins CI/CD Pipeline
 
-The Jenkins pipeline is defined in the `Jenkinsfile`.
+The Jenkins pipeline performs the following stages:
 
-## Pipeline Stages
+## Checkout
 
-### 1. Checkout
-Downloads the latest source code from the GitHub repository.
+Clones the repository from GitHub.
 
-### 2. Build
-Installs all required Python dependencies using pip.
+## Build
 
-### 3. Test
-Runs automated unit tests using Pytest.
+- Creates Python virtual environment
+- Installs dependencies
 
-### 4. Deploy
-Starts the Flask application using the `start_flask.sh` script.
+```
+pip install -r requirements.txt
+```
 
-### Notifications
+## Test
 
-The pipeline sends email notifications on:
+Runs unit tests using Pytest.
 
-- Build Success
-- Build Failure
+```
+pytest
+```
+
+## Deploy
+
+Starts the Flask application.
+
+```
+bash start_flask.sh
+```
+
+---
+
+# Jenkins Server
+
+Hosted on:
+
+AWS EC2 Ubuntu 24.04
+
+Installed using Terraform UserData.
+
+Installed software:
+
+- Jenkins (Docker)
+- Docker
+- Git
+- Python
+- Terraform
+- AWS CLI
+- kubectl
+- Helm
+- eksctl
 
 ---
 
 # GitHub Actions Workflow
 
-The GitHub Actions workflow is located at:
+The workflow performs the following jobs.
 
-```
-.github/workflows/ci-cd.yml
-```
+## Build & Test
 
-## Workflow Jobs
+Runs for:
 
-### Build
+- main branch
+- staging branch
 
-- Checkout repository
-- Setup Python
-- Install dependencies
+Steps
 
-### Test
-
-- Execute all unit tests using Pytest
-
-### Deploy to Staging
-
-Triggered when code is pushed to the **staging** branch.
-
-### Deploy to Production
-
-Triggered when a release tag is created.
+- Checkout Repository
+- Install Python
+- Install Dependencies
+- Execute Unit Tests
 
 ---
 
-# GitHub Secrets
+## Deploy to Staging
 
-The workflow uses the following repository secret:
-
-| Secret Name | Purpose |
-|-------------|---------|
-| DEPLOY_KEY | Deployment authentication (dummy value for assignment) |
-
-Configure the secret from:
+Automatically executes when code is pushed to:
 
 ```
-Repository
-→ Settings
-→ Secrets and Variables
-→ Actions
-→ New Repository Secret
+staging
 ```
 
 ---
 
-# Branch Strategy
+## Deploy to Production
 
-- **main** → Primary development branch
-- **staging** → Staging deployment branch
+Automatically executes whenever a GitHub Release is published.
 
----
+Example:
 
-# Workflow Triggers
-
-| Event | Action |
-|--------|--------|
-| Push to main | Build & Test |
-| Push to staging | Build, Test & Deploy to Staging |
-| Release Tag | Deploy to Production |
+```
+Production Release v1.0
+```
 
 ---
 
-# Technologies Used
+# Repository
 
-- Python
-- Flask
-- Jenkins
-- GitHub Actions
-- Git
-- Pytest
+GitHub Repository
+
+```
+https://github.com/risingali-new/flask_Practice
+```
 
 ---
 
-# Submission Deliverables
+# Screenshots
 
-- Jenkins Pipeline (Jenkinsfile)
-- GitHub Actions Workflow
-- Updated README
-- Jenkins Pipeline Screenshots
-- GitHub Actions Screenshots
-- GitHub Repository URL
+## Jenkins Dashboard
+
+<img width="1852" height="717" alt="image" src="https://github.com/user-attachments/assets/bda40e03-6494-4a07-972f-c5f890b4863b" />
+
+## GitHub Actions Build & Test
+
+<img width="1855" height="826" alt="image" src="https://github.com/user-attachments/assets/2b929e05-02d3-42ee-9c7d-bd030538d931" />
+
+
+---
+
+## GitHub Actions Staging Deployment
+
+<img width="1364" height="836" alt="image" src="https://github.com/user-attachments/assets/f292d7e8-df05-4525-9f26-5c41c7af5b56" />
+
+
+---
+
+## GitHub Actions Production Deployment
+
+<img width="1350" height="738" alt="image" src="https://github.com/user-attachments/assets/052a68c7-9318-4514-9a2d-c35936c88289" />
+
+
+---
+
+# Assignment Deliverables
+
+✔ Jenkins Pipeline
+
+✔ GitHub Actions Workflow
+
+✔ Build Automation
+
+✔ Automated Testing
+
+✔ Staging Deployment
+
+✔ Production Deployment
+
+✔ README Documentation
+
+✔ Screenshots
 
 ---
 
 # Author
 
 Ali Hussain
+
+Hero Vired DevOps & Multi Cloud Architect Program
