@@ -1,134 +1,167 @@
-# Student Registration System
+# Flask Practice - CI/CD Pipeline Project
 
-A simple **Flask** web application to manage student records with **MongoDB** as the backend database. Users can **add, view, update, and delete** student details.
+## Project Overview
 
----
+This project demonstrates the implementation of Continuous Integration and Continuous Deployment (CI/CD) for a Flask web application using:
 
-## Features
-
-* List all students on the home page
-* Add a new student
-* Update existing student details
-* Delete a student with confirmation
-* Simple and responsive UI using Bootstrap
+- Jenkins Pipeline
+- GitHub Actions
+- Pytest for automated testing
 
 ---
 
-## Tech Stack
+## Repository Structure
 
-* **Backend:** Python, Flask
-* **Database:** MongoDB (via Flask-PyMongo)
-* **Frontend:** HTML, Jinja2 templates, Bootstrap 5
-* **Environment Variables:** Managed via `.env` file
-
----
-
-## Setup Instructions
-
-### 1. Clone the repository
-
-```bash
-git clone <your-repo-url>
-cd <repo-folder>
+```
+flask_Practice
+│
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml
+├── templates/
+├── app.py
+├── test_app.py
+├── requirements.txt
+├── Jenkinsfile
+├── start_flask.sh
+└── README.md
 ```
 
-### 2. Create and activate a virtual environment
+---
 
-```bash
-python -m venv venv
-# Activate venv
-# Windows:
-venv\Scripts\activate
-# Linux / Mac:
-source venv/bin/activate
-```
+# Prerequisites
 
-### 3. Install dependencies
+- Python 3.x
+- pip
+- Git
+- GitHub Account
+- Jenkins
+- Pytest
+
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-**`requirements.txt` example:**
+---
 
-```
-Flask
-Flask-PyMongo
-python-dotenv
-bson
-```
+# Jenkins CI/CD Pipeline
 
-### 4. Configure environment variables
+The Jenkins pipeline is defined in the `Jenkinsfile`.
 
-Create a `.env` file in the project root:
+## Pipeline Stages
 
-```
-MONGO_URI=<your-mongodb-connection-string>
-SECRET_KEY=<your-secret-key>
-```
+### 1. Checkout
+Downloads the latest source code from the GitHub repository.
 
-### 5. Run the application
+### 2. Build
+Installs all required Python dependencies using pip.
 
-```bash
-python app.py
-```
+### 3. Test
+Runs automated unit tests using Pytest.
 
-Open your browser at: [http://localhost:8000](http://localhost:8000)
+### 4. Deploy
+Starts the Flask application using the `start_flask.sh` script.
+
+### Notifications
+
+The pipeline sends email notifications on:
+
+- Build Success
+- Build Failure
 
 ---
 
-## Project Structure
+# GitHub Actions Workflow
+
+The GitHub Actions workflow is located at:
 
 ```
-project/
-│
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── add_student.html
-│   ├── update_student.html
-│
-├── app.py
-├── requirements.txt
-└── .env
+.github/workflows/ci-cd.yml
+```
+
+## Workflow Jobs
+
+### Build
+
+- Checkout repository
+- Setup Python
+- Install dependencies
+
+### Test
+
+- Execute all unit tests using Pytest
+
+### Deploy to Staging
+
+Triggered when code is pushed to the **staging** branch.
+
+### Deploy to Production
+
+Triggered when a release tag is created.
+
+---
+
+# GitHub Secrets
+
+The workflow uses the following repository secret:
+
+| Secret Name | Purpose |
+|-------------|---------|
+| DEPLOY_KEY | Deployment authentication (dummy value for assignment) |
+
+Configure the secret from:
+
+```
+Repository
+→ Settings
+→ Secrets and Variables
+→ Actions
+→ New Repository Secret
 ```
 
 ---
 
-## Screenshots
+# Branch Strategy
 
-**Home Page**
-Lists all students with Edit/Delete buttons.
-- <img width="1902" height="607" alt="image" src="https://github.com/user-attachments/assets/a58a6a6d-4978-4769-8074-232e4d31e69d" />
-
-
-**Add Student**
-Form to add a new student.
-- <img width="1897" height="801" alt="image" src="https://github.com/user-attachments/assets/d65d25c3-ebb5-410a-adb1-e130ad7c5878" />
-
-
-**Update Student**
-Form pre-filled with student details.
-- <img width="1905" height="897" alt="image" src="https://github.com/user-attachments/assets/04febf01-879f-431f-ab07-abcfb993acf1" />
-
-
+- **main** → Primary development branch
+- **staging** → Staging deployment branch
 
 ---
 
-## Notes
+# Workflow Triggers
 
-* Make sure MongoDB is running and accessible via the URI in `.env`
-* Delete action includes a confirmation page to prevent accidental deletion
-* Uses `ObjectId` from `bson` to work with MongoDB document IDs
-* If you use MongoDB Atlas on macOS, install dependencies again (`pip install -r requirements.txt`). This project now uses `certifi` CA bundle explicitly to avoid common TLS certificate verification failures with `pymongo`.
-
----
-
-## License
-
-MIT License
+| Event | Action |
+|--------|--------|
+| Push to main | Build & Test |
+| Push to staging | Build, Test & Deploy to Staging |
+| Release Tag | Deploy to Production |
 
 ---
 
+# Technologies Used
 
+- Python
+- Flask
+- Jenkins
+- GitHub Actions
+- Git
+- Pytest
 
+---
+
+# Submission Deliverables
+
+- Jenkins Pipeline (Jenkinsfile)
+- GitHub Actions Workflow
+- Updated README
+- Jenkins Pipeline Screenshots
+- GitHub Actions Screenshots
+- GitHub Repository URL
+
+---
+
+# Author
+
+Ali Hussain
