@@ -1,8 +1,9 @@
 pipeline {
+
     agent any
 
     environment {
-        APP_NAME = "FlaskApp"
+        VENV = ".venv"
     }
 
     stages {
@@ -15,33 +16,45 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Installing dependencies...'
 
                 sh '''
-                python3 -m pip install --upgrade pip
-                pip3 install -r requirements.txt
+
+                python3 -m venv $VENV
+
+                . $VENV/bin/activate
+
+                pip install -r requirements.txt
+
                 '''
+
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running Tests...'
 
                 sh '''
-                pytest
+
+                . $VENV/bin/activate
+
+                pytest test_app.py
+
                 '''
+
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying to Staging...'
 
                 sh '''
+
                 chmod +x start_flask.sh
-                nohup ./start_flask.sh &
+
+                ./start_flask.sh
+
                 '''
+
             }
         }
     }
@@ -49,15 +62,17 @@ pipeline {
     post {
 
         success {
-            mail to: 'your-email@gmail.com',
-                 subject: 'SUCCESS : Jenkins Pipeline',
-                 body: 'Build Successful'
+            echo "Pipeline completed successfully."
         }
 
         failure {
-            mail to: 'risingali@gmail.com',
-                 subject: 'FAILED : Jenkins Pipeline',
-                 body: 'Build Failed'
+            echo "Pipeline failed."
         }
+
+        always {
+            cleanWs()
+        }
+
     }
+
 }
